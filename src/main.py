@@ -22,6 +22,9 @@ class YoutubeFree:
                       query: str, 
                       add_to_search: str = None, 
                       search_range: int = 0) -> List[Dict[str, str]]:
+        """
+        Method which webscraping Youtube to return video info. The search is based in a `query` with the name of video. You could `add_to_search` to add a term to the main `query`. The argument `search_range` determine how many videos info would be returned based in order which the videos appears on Youtube page.
+        """
         treated_query = query.replace(' ', '+')
 
         if add_to_search != None:
@@ -50,8 +53,3 @@ class YoutubeFree:
             }
             videos_infos.append(video_info)
         return videos_infos
-
-
-api = YoutubeFree()
-print(api.search_video_info('esquiva esgrima criolo', 'karaoke', 5))
-
