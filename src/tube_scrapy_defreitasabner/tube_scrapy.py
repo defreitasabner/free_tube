@@ -6,7 +6,7 @@ from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 
-class YoutubeFree:
+class TubeScrapy:
     def __init__(self) -> None:
         self.chrome_options = Options()
         self.chrome_options.add_argument('no--sandbox')
