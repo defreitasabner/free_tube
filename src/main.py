@@ -18,11 +18,10 @@ class YoutubeFree:
             options = self.chrome_options
             )
 
-    def search_videos(self, 
+    def search_video_info(self, 
                       query: str, 
                       add_to_search: str = None, 
                       search_range: int = 0) -> List[Dict[str, str]]:
-        
         treated_query = query.replace(' ', '+')
 
         if add_to_search != None:
@@ -32,25 +31,27 @@ class YoutubeFree:
 
         if search_range == 0:
             videos = self.browser.find_elements(By.TAG_NAME, 'ytd-video-renderer')[:1]
-        else:
+        elif search_range > 0:
             videos = self.browser.find_elements(By.TAG_NAME, 'ytd-video-renderer')[:search_range]
+        else:
+            raise Exception('Parameter "search_range" just allow numeric values >= 0')
 
-        videos_info = []
+        videos_infos = []
         for video in videos:
             title = video.find_element(By.ID, 'title-wrapper').text
             video_url = video.find_element(By.TAG_NAME, 'a').get_property('href')
             thumbnail = video.find_element(By.TAG_NAME, 'img').get_property('src')
-            views = video.find_element(By.ID, 'metadata-line').text
+            views = video.find_element(By.ID, 'metadata-line').text.split('\n')[0]
             video_info = {
                 'title': title,
                 'url': video_url,
                 'thumbnail': thumbnail,
                 'views': views,
             }
-            videos_info.append(video_info)
-        return videos_info
+            videos_infos.append(video_info)
+        return videos_infos
 
 
 api = YoutubeFree()
-print(api.search_videos('esquiva esgrima criolo'))
+print(api.search_video_info('esquiva esgrima criolo', 'karaoke', 5))
 
