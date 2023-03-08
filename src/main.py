@@ -18,8 +18,11 @@ class YoutubeFree:
             options = self.chrome_options
             )
 
-    def search_video(self, query: str) -> str:
+    def search_videos(self, query: str, add_to_search: str = None, search_range: int = 1) -> str:
         treated_query = query.replace(' ', '+')
+        if add_to_search != None:
+            treated_add_search = add_to_search.replace(' ', '+')
+            treated_query = f'{treated_query}+{treated_add_search}'
         self.browser.get(f'https://www.youtube.com/results?search_query={treated_query}')
         first_video = self.browser.find_element(By.XPATH, '//*[@id="contents"]/ytd-video-renderer')
         title = first_video.find_element(By.XPATH, '//*[@id="title-wrapper"]').text
@@ -36,5 +39,5 @@ class YoutubeFree:
 
 
 api = YoutubeFree()
-print(api.search_video('esquiva esgrima criolo'))
+print(api.search_videos('esquiva esgrima criolo', 'karaoke'))
 
