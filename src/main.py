@@ -15,15 +15,26 @@ class YoutubeFree:
 
         self.browser = webdriver.Chrome(
             service = Service(ChromeDriverManager().install()),
+            options = self.chrome_options
             )
 
     def search_video(self, query: str) -> str:
         treated_query = query.replace(' ', '+')
         self.browser.get(f'https://www.youtube.com/results?search_query={treated_query}')
-        self.browser.find_element(By.XPATH, '//*[@id="thumbnail"]/yt-image/img').click()
-        return self.browser.current_url
+        first_video = self.browser.find_element(By.XPATH, '//*[@id="contents"]/ytd-video-renderer')
+        title = first_video.find_element(By.XPATH, '//*[@id="title-wrapper"]').text
+        video_url = first_video.find_element(By.TAG_NAME, 'a').get_property('href')
+        thumbnail = first_video.find_element(By.TAG_NAME, 'img').get_property('src')
+        views = first_video.find_element(By.XPATH, '//*[@id="metadata-line"]/span').text
+        video_info = {
+            'title': title,
+            'url': video_url,
+            'thumbnail': thumbnail,
+            'views': views,
+        }
+        return video_info
 
 
 api = YoutubeFree()
-print(api.search_video('drivers license olivia rodrigo'))
+print(api.search_video('esquiva esgrima criolo'))
 
