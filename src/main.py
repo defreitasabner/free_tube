@@ -1,10 +1,10 @@
+from typing import List, Dict
+
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support import expected_conditions as ec
 
 class YoutubeFree:
     def __init__(self) -> None:
@@ -18,26 +18,39 @@ class YoutubeFree:
             options = self.chrome_options
             )
 
-    def search_videos(self, query: str, add_to_search: str = None, search_range: int = 1) -> str:
+    def search_videos(self, 
+                      query: str, 
+                      add_to_search: str = None, 
+                      search_range: int = 0) -> List[Dict[str, str]]:
+        
         treated_query = query.replace(' ', '+')
+
         if add_to_search != None:
             treated_add_search = add_to_search.replace(' ', '+')
             treated_query = f'{treated_query}+{treated_add_search}'
         self.browser.get(f'https://www.youtube.com/results?search_query={treated_query}')
-        first_video = self.browser.find_element(By.XPATH, '//*[@id="contents"]/ytd-video-renderer')
-        title = first_video.find_element(By.XPATH, '//*[@id="title-wrapper"]').text
-        video_url = first_video.find_element(By.TAG_NAME, 'a').get_property('href')
-        thumbnail = first_video.find_element(By.TAG_NAME, 'img').get_property('src')
-        views = first_video.find_element(By.XPATH, '//*[@id="metadata-line"]/span').text
-        video_info = {
-            'title': title,
-            'url': video_url,
-            'thumbnail': thumbnail,
-            'views': views,
-        }
-        return video_info
+
+        if search_range == 0:
+            videos = self.browser.find_elements(By.TAG_NAME, 'ytd-video-renderer')[:1]
+        else:
+            videos = self.browser.find_elements(By.TAG_NAME, 'ytd-video-renderer')[:search_range]
+
+        videos_info = []
+        for video in videos:
+            title = video.find_element(By.ID, 'title-wrapper').text
+            video_url = video.find_element(By.TAG_NAME, 'a').get_property('href')
+            thumbnail = video.find_element(By.TAG_NAME, 'img').get_property('src')
+            views = video.find_element(By.ID, 'metadata-line').text
+            video_info = {
+                'title': title,
+                'url': video_url,
+                'thumbnail': thumbnail,
+                'views': views,
+            }
+            videos_info.append(video_info)
+        return videos_info
 
 
 api = YoutubeFree()
-print(api.search_videos('esquiva esgrima criolo', 'karaoke'))
+print(api.search_videos('esquiva esgrima criolo'))
 
