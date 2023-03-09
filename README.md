@@ -1,6 +1,11 @@
-# Freetube
-Projetinho Webscraping para coletar dados do youtube para uso em diversos projetos.
+# TubeScrapy
+A python package to webscrap for youtube video data as title, video url, thumbnail url, and number of views.
 
-## Tecnologias
+### Python minimal version
 - Python 3.8
-- Selenium 4.x
+
+### Python packages required
+- Selenium 4.8.2
+- Webdriver-manager 3.8.5
+
+## Examples
