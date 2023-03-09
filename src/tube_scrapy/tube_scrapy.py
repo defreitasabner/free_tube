@@ -7,6 +7,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 
 from scraped_video_info import ScrapedVideoInfo
+from exceptions import AddToSearchError, SearchTitleError, SearchRangeError
 
 class TubeScrapy:
     def __init__(self) -> None:
@@ -21,25 +22,27 @@ class TubeScrapy:
             )
 
     def search_video_info(self, 
-                      query: str, 
-                      add_to_search: str = None, 
-                      search_range: int = 0) -> List[ScrapedVideoInfo]:
+                      search_title: str, 
+                      add_to_search: str = '', 
+                      search_range: int = 1) -> List[ScrapedVideoInfo]:
         """
         Method which webscraping Youtube to return video info. The search is based in a `query` with the name of video. You could `add_to_search` to add a term to the main `query`. The argument `search_range` determine how many videos info would be returned based in order which the videos appears on Youtube page.
         """
-        treated_query = query.replace(' ', '+')
-
-        if add_to_search != None:
-            treated_add_search = add_to_search.replace(' ', '+')
-            treated_query = f'{treated_query}+{treated_add_search}'
+        if type(search_title) != str:
+            raise SearchTitleError('Parameter "search_title" just allow type \'strings\'.')
+        if type(add_to_search) != str:
+            raise AddToSearchError('Parameter "add_to_search" just allow type \'strings\'.')
+        if type(search_range) != int or search_range < 0:
+            raise SearchRangeError('Parameter "search_range" just allow type \'int\' and with value > 1.')
+        
+        treated_query = search_title.replace(' ', '+')
+        
+        treated_add_search = add_to_search.replace(' ', '+')
+        treated_query = f'{treated_query}+{treated_add_search}'
+            
         self.browser.get(f'https://www.youtube.com/results?search_query={treated_query}')
 
-        if search_range == 0:
-            videos = self.browser.find_elements(By.TAG_NAME, 'ytd-video-renderer')[:1]
-        elif search_range > 0:
-            videos = self.browser.find_elements(By.TAG_NAME, 'ytd-video-renderer')[:search_range]
-        else:
-            raise Exception('Parameter "search_range" just allow numeric values >= 0')
+        videos = self.browser.find_elements(By.TAG_NAME, 'ytd-video-renderer')[:search_range]
 
         videos_infos = []
         for video in videos:
