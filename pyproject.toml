@@ -15,8 +15,8 @@ requires-python = ">=3.7"
 keywords = ["webscraping", "youtube"]
 classifiers = [
     "Development Status :: 4 - Beta",
-    "Programming Language :: Python",
-    "License :: MIT License",
+    "Programming Language :: Python :: 3.8",
+    "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
 dynamic = ["version"]
