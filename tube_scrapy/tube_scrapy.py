@@ -6,8 +6,8 @@ from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 
-from scraped_video_info import ScrapedVideoInfo
-from exceptions import AddToSearchError, SearchTitleError, SearchRangeError
+from tube_scrapy.scraped_video_info import ScrapedVideoInfo
+from tube_scrapy.exceptions import AddToSearchError, SearchTitleError, SearchRangeError
 
 class TubeScrapy:
     def __init__(self) -> None:
