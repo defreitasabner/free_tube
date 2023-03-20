@@ -34,3 +34,4 @@ ScrapedVideoInfo(
     views = views               # video number of views
 )
 ~~~
+This is it, good coding! ;-) For more information, visit the project [repository](https://github.com/defreitasabner/tube_scrapy) and relate any [issue](https://github.com/defreitasabner/tube_scrapy/issues), please.
