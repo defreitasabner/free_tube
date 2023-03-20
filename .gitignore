@@ -1,4 +1,13 @@
+# Python related directories
 venv/
 __pycache__/
+
+# Distribution package related
+dist/
+*.egg-info/
+
+# Enviroment
 *.env
+
+# Vscode stuffs
 *.vscode/
