@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "tube_scrapy"
-version = '1.0.0-beta'
+version = '1.0.0-beta3'
 authors = [
   { name="Abner Freitas", email="defreitasabner@gmail.com" },
 ]
@@ -20,8 +20,8 @@ classifiers = [
     "Operating System :: OS Independent",
 ]
 dependencies = [
-  "selenium==4.8.2",
-  "webdriver-manager==3.8.5"
+  "selenium",
+  "webdriver_manager"
 ]
 
 [project.urls]
